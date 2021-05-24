@@ -1,0 +1,7 @@
+node_modules/
+build/
+logs/
+assets/
+dist/
+rs-assets/
+rs-db/
