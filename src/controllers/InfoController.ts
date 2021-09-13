@@ -1,6 +1,6 @@
 import { Controller, Route, Tags, Example, Request, Get, OperationId, Security } from "tsoa";
 import { IAuthRequest } from "../interfaces";
-import { UserRights } from "@djonnyx/tornado-types";
+import { IIntegrationServerInfo } from "@djonnyx/tornado-types";
 import { version } from '../../package.json';
 import { AVAILABLE_RIGHTS } from "./RightsController";
 
@@ -13,15 +13,9 @@ interface IInfoResponse {
     }>;
 }
 
-interface IInfoMeta {}
+interface IInfoMeta { }
 
-interface IInfoData {
-    serverName: string;
-    versionName: string;
-    versionCode: number;
-    version: string;
-    availableRights: Array<UserRights>;
-}
+interface IInfoData extends IIntegrationServerInfo { }
 
 const META_TEMPLATE: IInfoMeta = {};
 

@@ -3,67 +3,10 @@ import { makeRequest } from "../utils/proxy";
 import * as config from "../config";
 import { ILicense, ILicenseType, IApplication, IIntegration } from "@djonnyx/tornado-types";
 
-interface IRequestOptions {
-    clientToken?: string;
-}
-
-interface ILoginParams {
-    pass: string;
-    email: string;
-}
-
-interface IRegistrationParams {
-    captchaId: string;
-    captchaValue: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-}
-
-interface IGetClientCheckRestorePasswordParams {
-    restorePassCode: string;
-}
-
-interface IPostClientRestorePasswordParams {
-    restorePassCode: string;
-    newPass: string;
-}
-
-interface IGetClientRestorePasswordParams {
-    email: string;
-    captchaId: string;
-    captchaVal: string;
-}
-
-export interface ICheckLicenseResponse {
-    meta?: any;
-    data?: ILicense;
-    error?: Array<{
-        code: number;
-        message: string;
-    }>;
-}
-
-export interface ISetDeviceResponse {
-    meta?: any;
-    data?: ILicense;
-    error?: Array<{
-        code: number;
-        message: string;
-    }>;
-}
-
 const BASE_URL = "api/v0/";
 
 class RefServerApiService {
-    private getToken(options?: IRequestOptions): string {
-        const clientToken = !!options && !!options.clientToken ? options.clientToken : undefined;
-
-        if (!!clientToken) {
-            return `Bearer ${options.clientToken}`;
-        }
-
+    private getToken(): string {
         return `Bearer ${config.REF_SERVER_API_KEY}`;
     }
 
@@ -74,66 +17,6 @@ class RefServerApiService {
                     "content-type": "application/json",
                     "authorization": this.getToken(),
                 },
-            }),
-        );
-    }
-
-    public async signin<T = any>(params: ILoginParams, options?: IRequestOptions): Promise<T> {
-        return await makeRequest<T>(
-            got.post(`${config.REF_SERVER_HOST}/${BASE_URL}clientToken`, {
-                headers: {
-                    "content-type": "application/json",
-                    "authorization": this.getToken(options),
-                },
-                body: JSON.stringify(params),
-            }),
-        );
-    }
-
-    public async signup<T = any>(params: IRegistrationParams, options?: IRequestOptions): Promise<T> {
-        return await makeRequest<T>(
-            got.post(`${config.REF_SERVER_HOST}/${BASE_URL}auth/registration`, {
-                headers: {
-                    "content-type": "application/json",
-                    "authorization": this.getToken(options),
-                },
-                body: JSON.stringify(params),
-            }),
-        );
-    }
-
-    public async postClientRestorePassword<T = any>(params: IPostClientRestorePasswordParams, options?: IRequestOptions): Promise<T> {
-        return await makeRequest<T>(
-            got.post(`${config.REF_SERVER_HOST}/${BASE_URL}client/restorePass`, {
-                headers: {
-                    "content-type": "application/json",
-                    "authorization": this.getToken(options),
-                },
-                body: JSON.stringify(params),
-            }),
-        );
-    }
-
-    public async getClientRestorePassword<T = any>(params: IGetClientRestorePasswordParams, options?: IRequestOptions): Promise<T> {
-        return await makeRequest<T>(
-            got.get(`${config.REF_SERVER_HOST}/${BASE_URL}client/restorePass`, {
-                headers: {
-                    "content-type": "application/json",
-                    "authorization": this.getToken(options),
-                },
-                query: params,
-            }),
-        );
-    }
-
-    public async clientCheckRestorePassCode<T = any>(params: IGetClientCheckRestorePasswordParams, options?: IRequestOptions): Promise<T> {
-        return await makeRequest<T>(
-            got.get(`${config.REF_SERVER_HOST}/${BASE_URL}client/checkRestorePassCode`, {
-                headers: {
-                    "content-type": "application/json",
-                    "authorization": this.getToken(options),
-                },
-                query: params,
             }),
         );
     }
@@ -167,32 +50,6 @@ class RefServerApiService {
                     "content-type": "application/json",
                     "authorization": this.getToken(),
                 }
-            }),
-        );
-    }
-
-    public async setDevice(deviceToken: string): Promise<ISetDeviceResponse> {
-        return await makeRequest(
-            got.put(`${config.REF_SERVER_HOST}/${BASE_URL}license/setDevice`, {
-                headers: {
-                    "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: deviceToken,
-                    }),
-                },
-            }),
-        );
-    }
-
-    public async checkLicense(deviceToken: string): Promise<ICheckLicenseResponse> {
-        return await makeRequest(
-            got.get(`${config.REF_SERVER_HOST}/${BASE_URL}deviceToken/check`, {
-                headers: {
-                    "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: deviceToken,
-                    }),
-                },
             }),
         );
     }
@@ -266,27 +123,23 @@ class RefServerApiService {
         );
     }
 
-    public async getLicensesForClient<T = any>(token: string): Promise<T> {
+    public async getLicensesForClient<T = any>(): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.REF_SERVER_HOST}/${BASE_URL}license/forClient`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 }
             }),
         );
     }
 
-    public async getLicenseForClient<T = any>(id: string, token: string, filter?: Array<any>): Promise<T> {
+    public async getLicenseForClient<T = any>(id: string, filter?: Array<any>): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.REF_SERVER_HOST}/${BASE_URL}license/forClient/byId`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 },
                 query: {
                     id,
@@ -296,204 +149,174 @@ class RefServerApiService {
     }
 
     // license types
-    public async getLicenseTypes<T = any>(token: string): Promise<T> {
+    public async getLicenseTypes<T = any>(): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.REF_SERVER_HOST}/${BASE_URL}license-types`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 }
             }),
         );
     }
 
-    public async getLicenseType<T = any>(id: string, token: string): Promise<T> {
+    public async getLicenseType<T = any>(id: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.REF_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 }
             }),
         );
     }
 
-    public async createLicenseType<T = any>(licenseType: ILicenseType, token: string): Promise<T> {
+    public async createLicenseType<T = any>(licenseType: ILicenseType): Promise<T> {
         return await makeRequest<T>(
             got.post(`${config.REF_SERVER_HOST}/${BASE_URL}license-type`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 },
                 body: JSON.stringify(licenseType),
             }),
         );
     }
 
-    public async updateLicenseType<T = any>(id: string, licenseType: ILicenseType, token: string): Promise<T> {
+    public async updateLicenseType<T = any>(id: string, licenseType: ILicenseType): Promise<T> {
         return await makeRequest<T>(
             got.put(`${config.REF_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 },
                 body: JSON.stringify(licenseType),
             }),
         );
     }
 
-    public async deleteLicenseType<T = any>(id: string, token: string): Promise<T> {
+    public async deleteLicenseType<T = any>(id: string): Promise<T> {
         return await makeRequest<T>(
             got.delete(`${config.REF_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 },
             }),
         );
     }
 
     // applications
-    public async getApplications<T = any>(token: string): Promise<T> {
+    public async getApplications<T = any>(): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.REF_SERVER_HOST}/${BASE_URL}applications`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 }
             }),
         );
     }
 
-    public async getApplication<T = any>(id: string, token: string): Promise<T> {
+    public async getApplication<T = any>(id: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.REF_SERVER_HOST}/${BASE_URL}application/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 }
             }),
         );
     }
 
-    public async createApplication<T = any>(application: IApplication, token: string): Promise<T> {
+    public async createApplication<T = any>(application: IApplication): Promise<T> {
         return await makeRequest<T>(
             got.post(`${config.REF_SERVER_HOST}/${BASE_URL}application`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 },
                 body: JSON.stringify(application),
             }),
         );
     }
 
-    public async updateApplication<T = any>(id: string, application: IApplication, token: string): Promise<T> {
+    public async updateApplication<T = any>(id: string, application: IApplication): Promise<T> {
         return await makeRequest<T>(
             got.put(`${config.REF_SERVER_HOST}/${BASE_URL}application/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 },
                 body: JSON.stringify(application),
             }),
         );
     }
 
-    public async deleteApplication<T = any>(id: string, token: string): Promise<T> {
+    public async deleteApplication<T = any>(id: string): Promise<T> {
         return await makeRequest<T>(
             got.delete(`${config.REF_SERVER_HOST}/${BASE_URL}application/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 },
             }),
         );
     }
 
     // integrations
-    public async getIntegrations<T = any>(token: string): Promise<T> {
+    public async getIntegrations<T = any>(): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.REF_SERVER_HOST}/${BASE_URL}integrations`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 }
             }),
         );
     }
 
-    public async getIntegration<T = any>(id: string, token: string): Promise<T> {
+    public async getIntegration<T = any>(id: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.REF_SERVER_HOST}/${BASE_URL}integration/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 }
             }),
         );
     }
 
-    public async createIntegration<T = any>(licenseType: IIntegration, token: string): Promise<T> {
+    public async createIntegration<T = any>(licenseType: IIntegration): Promise<T> {
         return await makeRequest<T>(
             got.post(`${config.REF_SERVER_HOST}/${BASE_URL}integration`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 },
                 body: JSON.stringify(licenseType),
             }),
         );
     }
 
-    public async updateIntegration<T = any>(id: string, licenseType: IIntegration, token: string): Promise<T> {
+    public async updateIntegration<T = any>(id: string, licenseType: IIntegration): Promise<T> {
         return await makeRequest<T>(
             got.put(`${config.REF_SERVER_HOST}/${BASE_URL}integration/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 },
                 body: JSON.stringify(licenseType),
             }),
         );
     }
 
-    public async deleteIntegration<T = any>(id: string, token: string): Promise<T> {
+    public async deleteIntegration<T = any>(id: string): Promise<T> {
         return await makeRequest<T>(
             got.delete(`${config.REF_SERVER_HOST}/${BASE_URL}integration/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken({
-                        clientToken: token,
-                    }),
+                    "authorization": this.getToken(),
                 },
             }),
         );
