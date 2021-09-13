@@ -3,6 +3,7 @@ import { ErrorResponse } from "./ErrorResponse";
 import { SuccessResponse } from "./SuccessResponse";
 import { IAuthInfo, IAuthRequest } from "./IAuthRequest";
 import { IRequestOptions } from "./IRequestOptions";
+import { IClientJWTBody } from "./IClientJWTBody";
 
 export {
     IError,
@@ -11,4 +12,5 @@ export {
     IAuthRequest,
     IAuthInfo,
     IRequestOptions,
+    IClientJWTBody,
 };

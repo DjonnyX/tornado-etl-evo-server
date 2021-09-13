@@ -1,0 +1,550 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"IRef": {
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Имя"
+					},
+					"version": {
+						"type": "number",
+						"format": "double",
+						"description": "Версия справочника"
+					},
+					"lastUpdate": {
+						"type": "string",
+						"format": "date-time",
+						"description": "Время последнего обновления\r\nФормат: Date Long"
+					}
+				},
+				"required": [
+					"name",
+					"version",
+					"lastUpdate"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IRightInfoMeta": {
+				"properties": {
+					"ref": {
+						"$ref": "#/components/schemas/IRef"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserRights": {
+				"enum": [
+					0,
+					1,
+					2,
+					3,
+					4,
+					5,
+					6,
+					7,
+					8,
+					9,
+					10,
+					11,
+					12,
+					13,
+					14,
+					15,
+					16,
+					17,
+					18,
+					19,
+					20,
+					21,
+					22,
+					23,
+					24,
+					25,
+					26,
+					27,
+					28,
+					29,
+					30,
+					31,
+					32,
+					33,
+					34,
+					35,
+					36,
+					37,
+					38,
+					39,
+					40,
+					41,
+					42,
+					43,
+					44,
+					45,
+					46,
+					47,
+					48,
+					49,
+					50,
+					51,
+					52,
+					53,
+					54,
+					55,
+					56,
+					57,
+					58,
+					59,
+					60,
+					61,
+					62,
+					63,
+					64,
+					65,
+					66,
+					67,
+					68,
+					69,
+					70,
+					71,
+					72
+				],
+				"type": "number"
+			},
+			"IRightInfo": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"code": {
+						"$ref": "#/components/schemas/UserRights"
+					}
+				},
+				"required": [
+					"name",
+					"code"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IRightsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IRightInfoMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IRightInfo"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"clientAccessToken": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			},
+			"terminalAccessToken": {
+				"type": "apiKey",
+				"name": "x-access-token",
+				"in": "header"
+			}
+		}
+	},
+	"info": {
+		"title": "tornado-etl-evo-server",
+		"version": "1.0.0",
+		"license": {
+			"name": "Commercial"
+		},
+		"contact": {
+			"name": "Eugene Grebennikov",
+			"email": "djonnyx@gmail.com"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/rights": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IRightsResponse"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "rights",
+													"version": 1,
+													"lastUpdate": "2021-09-13T14:47:18.903Z"
+												}
+											},
+											"data": [
+												{
+													"name": "View Backups",
+													"code": 0
+												},
+												{
+													"name": "Form Backups",
+													"code": 1
+												},
+												{
+													"name": "Upload Backups",
+													"code": 2
+												},
+												{
+													"name": "Read Licenses",
+													"code": 3
+												},
+												{
+													"name": "Read License",
+													"code": 4
+												},
+												{
+													"name": "Create License",
+													"code": 5
+												},
+												{
+													"name": "Update License",
+													"code": 6
+												},
+												{
+													"name": "Delete License",
+													"code": 7
+												},
+												{
+													"name": "Revoke License",
+													"code": 8
+												},
+												{
+													"name": "Read Languages",
+													"code": 9
+												},
+												{
+													"name": "Read Language",
+													"code": 10
+												},
+												{
+													"name": "Create Language",
+													"code": 11
+												},
+												{
+													"name": "Update Language",
+													"code": 12
+												},
+												{
+													"name": "Delete Language",
+													"code": 13
+												},
+												{
+													"name": "Read Tags",
+													"code": 14
+												},
+												{
+													"name": "Read Tag",
+													"code": 15
+												},
+												{
+													"name": "Create Tag",
+													"code": 16
+												},
+												{
+													"name": "Update Tag",
+													"code": 17
+												},
+												{
+													"name": "Delete Tag",
+													"code": 18
+												},
+												{
+													"name": "Read Products",
+													"code": 19
+												},
+												{
+													"name": "Read Product",
+													"code": 20
+												},
+												{
+													"name": "Create Product",
+													"code": 21
+												},
+												{
+													"name": "Update Product",
+													"code": 22
+												},
+												{
+													"name": "Delete Product",
+													"code": 23
+												},
+												{
+													"name": "Read Selectors",
+													"code": 24
+												},
+												{
+													"name": "Read Selector",
+													"code": 25
+												},
+												{
+													"name": "Create Selector",
+													"code": 26
+												},
+												{
+													"name": "Update Selector",
+													"code": 27
+												},
+												{
+													"name": "Delete Selector",
+													"code": 28
+												},
+												{
+													"name": "Read Currencies",
+													"code": 29
+												},
+												{
+													"name": "Read Currency",
+													"code": 30
+												},
+												{
+													"name": "Create Currency",
+													"code": 31
+												},
+												{
+													"name": "Update Currency",
+													"code": 32
+												},
+												{
+													"name": "Delete Currency",
+													"code": 33
+												},
+												{
+													"name": "Read Stores",
+													"code": 34
+												},
+												{
+													"name": "Read Store",
+													"code": 35
+												},
+												{
+													"name": "Create Store",
+													"code": 36
+												},
+												{
+													"name": "Update Store",
+													"code": 37
+												},
+												{
+													"name": "Delete Store",
+													"code": 38
+												},
+												{
+													"name": "Read Terminals",
+													"code": 39
+												},
+												{
+													"name": "Read Terminal",
+													"code": 40
+												},
+												{
+													"name": "Create Terminal",
+													"code": 41
+												},
+												{
+													"name": "Update Terminal",
+													"code": 42
+												},
+												{
+													"name": "Delete Terminal",
+													"code": 43
+												},
+												{
+													"name": "Read OrderTypes",
+													"code": 44
+												},
+												{
+													"name": "Read OrderType",
+													"code": 45
+												},
+												{
+													"name": "Create OrderType",
+													"code": 46
+												},
+												{
+													"name": "Update OrderType",
+													"code": 47
+												},
+												{
+													"name": "Delete OrderType",
+													"code": 48
+												},
+												{
+													"name": "Read Checkues",
+													"code": 49
+												},
+												{
+													"name": "Read Checkue",
+													"code": 50
+												},
+												{
+													"name": "Create Checkue",
+													"code": 51
+												},
+												{
+													"name": "Update Checkue",
+													"code": 52
+												},
+												{
+													"name": "Delete Checkue",
+													"code": 53
+												},
+												{
+													"name": "Read Themes",
+													"code": 54
+												},
+												{
+													"name": "Read Theme",
+													"code": 55
+												},
+												{
+													"name": "Create Theme",
+													"code": 56
+												},
+												{
+													"name": "Update Theme",
+													"code": 57
+												},
+												{
+													"name": "Delete Theme",
+													"code": 58
+												},
+												{
+													"name": "Read Menu",
+													"code": 59
+												},
+												{
+													"name": "Create Menu node",
+													"code": 60
+												},
+												{
+													"name": "Update Menu node",
+													"code": 61
+												},
+												{
+													"name": "Delete Menu node",
+													"code": 62
+												},
+												{
+													"name": "Read Ads",
+													"code": 63
+												},
+												{
+													"name": "Read Ad",
+													"code": 64
+												},
+												{
+													"name": "Create Ad",
+													"code": 65
+												},
+												{
+													"name": "Update Ad",
+													"code": 66
+												},
+												{
+													"name": "Delete Ad",
+													"code": 67
+												},
+												{
+													"name": "Read Business periods",
+													"code": 68
+												},
+												{
+													"name": "Read Business period",
+													"code": 69
+												},
+												{
+													"name": "Create Business period",
+													"code": 70
+												},
+												{
+													"name": "Update Business period",
+													"code": 71
+												},
+												{
+													"name": "Delete Business period",
+													"code": 72
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Rights"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					}
+				],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/api/v1"
+		}
+	],
+	"tags": [
+		{
+			"name": "Tag",
+			"description": "Operations about tags",
+			"externalDocs": {
+				"description": "Find out more about tags",
+				"url": "http://swagger.io"
+			}
+		}
+	]
+}

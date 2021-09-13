@@ -14,3 +14,4 @@ export const PORT = Number.parseInt(process.env["PORT"]);
 export const SWAGGER_ROUTE = process.env["SWAGGER_ROUTE"];
 export const REF_SERVER_HOST = process.env["REF_SERVER_HOST"];
 export const REF_SERVER_API_KEY = process.env["REF_SERVER_API_KEY"];
+export const AUTH_PRIVATE_KEY = process.env["AUTH_PRIVATE_KEY"];

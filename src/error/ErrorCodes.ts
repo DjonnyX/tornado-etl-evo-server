@@ -1,3 +1,6 @@
 export enum ErrorCodes {
     UNKNOWN = 1,
+    CLIENT_TOKEN_EMPTY_TOKEN = 2,
+    CLIENT_TOKEN_VERIFICATION = 3,
+    CLIENT_TOKEN_BAD_FORMAT = 4,
 }
