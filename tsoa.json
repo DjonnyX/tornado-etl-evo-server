@@ -10,43 +10,11 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
-      },
-      "terminalAccessToken": {
-        "type": "apiKey",
-        "name": "x-access-token",
-        "in": "header"
       }
     },
     "basePath": "/api/v1",
     "outputDirectory": ".",
-    "specVersion": 3,
-    "tags": [
-      {
-        "name": "Tag",
-        "description": "Operations about tags",
-        "externalDocs": {
-          "description": "Find out more about tags",
-          "url": "http://swagger.io"
-        }
-      }
-    ],
-    "paths": {
-      "/assets/upload": {
-        "post": {
-          "consumes": [
-            "multipart/form-data"
-          ],
-          "parameters": [
-            {
-              "in": "formData",
-              "name": "file",
-              "required": true,
-              "type": "file"
-            }
-          ]
-        }
-      }
-    }
+    "specVersion": 3
   },
   "routes": {
     "basePath": "/api/v1",

@@ -177,11 +177,6 @@
 				"type": "http",
 				"scheme": "bearer",
 				"bearerFormat": "JWT"
-			},
-			"terminalAccessToken": {
-				"type": "apiKey",
-				"name": "x-access-token",
-				"in": "header"
 			}
 		}
 	},
@@ -216,7 +211,7 @@
 												"ref": {
 													"name": "rights",
 													"version": 1,
-													"lastUpdate": "2021-09-13T14:47:18.903Z"
+													"lastUpdate": "2021-09-13T14:56:10.057Z"
 												}
 											},
 											"data": [
@@ -535,16 +530,6 @@
 	"servers": [
 		{
 			"url": "/api/v1"
-		}
-	],
-	"tags": [
-		{
-			"name": "Tag",
-			"description": "Operations about tags",
-			"externalDocs": {
-				"description": "Find out more about tags",
-				"url": "http://swagger.io"
-			}
 		}
 	]
 }
