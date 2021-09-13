@@ -10,5 +10,5 @@ COPY package*.json .npmrc ./
 RUN npm install
 COPY . .
 RUN npm run compile
-EXPOSE 8083
+EXPOSE 8089
 CMD [ "npm", "start" ]
