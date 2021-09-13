@@ -16,16 +16,20 @@ interface IInfoResponse {
 interface IInfoMeta {}
 
 interface IInfoData {
-    name: string;
-    serverVersion: string;
+    serverName: string;
+    versionName: string;
+    versionCode: number;
+    version: string;
     availableRights: Array<UserRights>;
 }
 
 const META_TEMPLATE: IInfoMeta = {};
 
 const INFO_RESPONSE: IInfoData = {
-    name: "Evotor",
-    serverVersion: version,
+    serverName: "Evotor",
+    versionName: "Evo-5X",
+    versionCode: Number(Number(version.split(".").map(v => v + 100).reduce((summ, curr) => String(Number(summ) + Number(curr)))).toString(16)),
+    version,
     availableRights: AVAILABLE_RIGHTS,
 }
 
