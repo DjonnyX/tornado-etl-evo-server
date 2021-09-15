@@ -4,6 +4,8 @@
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RightsController } from './controllers/RightsController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { InfoController } from './controllers/InfoController';
 import { expressAuthentication } from './authentication';
 import * as express from 'express';
 
@@ -33,20 +35,40 @@ const models: TsoaRoute.Models = {
         "enums": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IRightInfo": {
-        "dataType": "refObject",
-        "properties": {
-            "name": {"dataType":"string","required":true},
-            "code": {"ref":"UserRights","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IRightsResponse": {
         "dataType": "refObject",
         "properties": {
             "meta": {"ref":"IRightInfoMeta"},
-            "data": {"dataType":"array","array":{"dataType":"refObject","ref":"IRightInfo"}},
+            "data": {"dataType":"array","array":{"dataType":"refEnum","ref":"UserRights"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IInfoMeta": {
+        "dataType": "refObject",
+        "properties": {
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IInfoData": {
+        "dataType": "refObject",
+        "properties": {
+            "serverName": {"dataType":"string","required":true},
+            "versionName": {"dataType":"string","required":true},
+            "versionCode": {"dataType":"double","required":true},
+            "version": {"dataType":"string","required":true},
+            "availableRights": {"dataType":"array","array":{"dataType":"refEnum","ref":"UserRights"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IInfoResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": {"ref":"IInfoMeta"},
+            "data": {"ref":"IInfoData"},
             "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
@@ -79,6 +101,29 @@ export function RegisterRoutes(app: express.Router) {
             }
 
             const controller = new RightsController();
+
+
+            const promise = controller.getRights.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/Info',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function InfoController_getRights(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new InfoController();
 
 
             const promise = controller.getRights.apply(controller, validatedArgs as any);

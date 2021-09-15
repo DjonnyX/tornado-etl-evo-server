@@ -7,7 +7,7 @@
   },
   "description": "",
   "scripts": {
-    "start": "node ./build/main.js",
+    "start": "node ./build/src/main.js",
     "serve": "nodemon -x ts-node src/main.ts",
     "build": "tsc",
     "gendoc": "tsoa routes && tsoa swagger",

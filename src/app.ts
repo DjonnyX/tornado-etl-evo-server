@@ -44,7 +44,7 @@ app.use((err: any | ServerError, _req: express.Request, res: express.Response, n
 
 try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const swaggerDocument = require("../swagger.json");
+    const swaggerDocument = require("../../swagger.json");
     app.use(config.SWAGGER_ROUTE, swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 } catch (err) {
     console.error("Unable to read swagger.json", err);
