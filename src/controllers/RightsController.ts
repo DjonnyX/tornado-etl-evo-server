@@ -104,6 +104,36 @@ export const AVAILABLE_RIGHTS: Array<UserRights> = [
     UserRights.CREATE_BUSINESS_PERIOD,
     UserRights.UPDATE_BUSINESS_PERIOD,
     UserRights.DELETE_BUSINESS_PERIOD,
+    // Applications
+    UserRights.READ_APPLICATIONS,
+    UserRights.READ_APPLICATION,
+    UserRights.CREATE_APPLICATION,
+    UserRights.UPDATE_APPLICATION,
+    UserRights.DELETE_APPLICATION,
+    // Integrations
+    UserRights.READ_INTEGRATIONS,
+    UserRights.READ_INTEGRATION,
+    UserRights.CREATE_INTEGRATION,
+    UserRights.UPDATE_INTEGRATION,
+    UserRights.DELETE_INTEGRATION,
+    // License types
+    UserRights.READ_LICENSE_TYPES,
+    UserRights.READ_LICENSE_TYPE,
+    UserRights.CREATE_LICENSE_TYPE,
+    UserRights.UPDATE_LICENSE_TYPE,
+    UserRights.DELETE_LICENSE_TYPE,
+    // Accounts
+    UserRights.READ_ACCOUNTS,
+    UserRights.READ_ACCOUNT,
+    UserRights.CREATE_ACCOUNT,
+    UserRights.UPDATE_ACCOUNT,
+    UserRights.DELETE_ACCOUNT,
+    // Account roles
+    UserRights.READ_ACCOUNT_ROLES,
+    UserRights.READ_ACCOUNT_ROLE,
+    UserRights.CREATE_ACCOUNT_ROLE,
+    UserRights.UPDATE_ACCOUNT_ROLE,
+    UserRights.DELETE_ACCOUNT_ROLE,
 ];
 
 const META_TEMPLATE: IRightInfoMeta = {

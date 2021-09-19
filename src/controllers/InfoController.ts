@@ -31,7 +31,7 @@ const INFO_RESPONSE: IInfoData = {
 @Tags("Info")
 export class InfoController extends Controller {
     @Get()
-    @Security("clientAccessToken")
+    //@Security("clientAccessToken")
     @OperationId("Get")
     @Example<IInfoResponse>({
         meta: META_TEMPLATE,
