@@ -16,7 +16,7 @@ services:
             - db:/data/db
 
     mongo-express:
-        image: mongo-express
+        image: mongo-express:0.54.0
         restart: always
         ports:
             - "8090:8081"
@@ -43,9 +43,9 @@ services:
             # DB_URI
             DB_URI: dbuser:dbpassword@mongo:27017/appdata
             # RefServer
-            REF_SERVER_HOST: http://192.168.8.110:8080
+            REF_SERVER_HOST: http://192.168.0.11:8080
             # RefServer
-            EVO_CLOUD_HOST: http://192.168.8.110:8080
+            EVO_CLOUD_HOST: http://192.168.0.11:8080
         ports:
             - 8089:8089
 
