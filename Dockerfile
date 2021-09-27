@@ -7,7 +7,7 @@ VOLUME /app/assets
 VOLUME /app/backups
 WORKDIR /app
 COPY package*.json .npmrc ./
-RUN npm install
+RUN npm ci
 COPY . .
 RUN npm run compile
 EXPOSE 8089
