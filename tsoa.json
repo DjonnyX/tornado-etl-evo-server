@@ -6,7 +6,7 @@
   ],
   "spec": {
     "securityDefinitions": {
-      "clientAccessToken": {
+      "checkEvoCloudToken": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
