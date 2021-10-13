@@ -46,6 +46,8 @@ services:
             EVO_API_HOST: https://api.evotor.ru/
             # EvoCloud token
             EVO_CLOUD_TOKEN: f91eb2d2-c8d5-4cef-9b25-fec0e7b06881
+            # Ключ доступа издателя Evo
+            PUBLISHER_PASSKEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM3ODE0NzI1NjksInVzZXJfbmFtZSI6ImNhYzFjNjI1LWM5YjUtNGI2YS05OGFlLTE0MzE4MWQxZDViMyIsImF1dGhvcml0aWVzIjpbIlJPTEVfUFVCTElTSEVSIl0sImp0aSI6IjFlN2M1MDM0LTI1YWEtNGYwYi05NGJkLTcyNzM1MTNjMTMyNCIsImNsaWVudF9pZCI6ImI1ODdiMDk3M2Y3MzU1MjQxMmI2NDU1NGFlY2E1ZGMzIiwic2NvcGUiOlsicHVzaC1ub3RpZmljYXRpb246d3JpdGUiXX0.XhCYXVkKHd4Cf02Usc6BllQDSRt7dhf-SfdgS12iMXE
         ports:
             - 8089:8089
 

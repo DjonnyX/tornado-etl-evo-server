@@ -27,7 +27,7 @@ const INFO_RESPONSE: IInfoData = {
     availableRights: AVAILABLE_RIGHTS,
 }
 
-@Route("/Info")
+@Route("/info")
 @Tags("Info")
 export class InfoController extends Controller {
     @Get()

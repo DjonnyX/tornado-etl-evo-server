@@ -248,5 +248,7 @@ export class UserController extends Controller {
             console.error(err);
             return err;
         }
+
+        this.setStatus(200);
     }
 }

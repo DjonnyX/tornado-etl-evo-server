@@ -23,3 +23,7 @@ export const EVO_API_HOST = process.env["EVO_API_HOST"];
  * Токен доступа
  */
 export const EVO_CLOUD_TOKEN  = process.env["EVO_CLOUD_TOKEN"];
+/**
+ * Ключ доступа издателя Evo
+ */
+export const PUBLISHER_PASSKEY  = process.env["PUBLISHER_PASSKEY"];
