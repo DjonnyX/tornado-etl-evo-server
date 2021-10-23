@@ -16,6 +16,8 @@ interface IRightInfoMeta {
 }
 
 export const AVAILABLE_RIGHTS: Array<UserRights> = [
+    // Dashboard
+    UserRights.READ_DASHBOARD,
     // Backups
     UserRights.VIEW_BACKUPS,
     UserRights.FORM_BACKUP,
