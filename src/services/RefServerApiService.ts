@@ -1,7 +1,7 @@
 import * as got from "got";
 import { makeRequest } from "../utils/proxy";
 import * as config from "../config";
-import { ILicense, ILicenseType, IApplication, IIntegration, IAccount, IAccountInfo } from "@djonnyx/tornado-types";
+import { ILicense, ITarif, IApplication, IIntegration, IAccount, IAccountInfo } from "@djonnyx/tornado-types";
 import { ServerModel } from "../models";
 import { IBaseResponse } from "src/interfaces";
 
@@ -206,12 +206,12 @@ class RefServerApiService {
         );
     }
 
-    // license types
-    public async getLicenseTypes<T = any>(): Promise<T> {
+    // tarifs
+    public async getTarifs<T = any>(): Promise<T> {
         const token = await this.getToken();
 
         return await makeRequest<T>(
-            got.get(`${config.REF_SERVER_HOST}/${BASE_URL}license-types`, {
+            got.get(`${config.REF_SERVER_HOST}/${BASE_URL}tarifs`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": token,
@@ -220,11 +220,11 @@ class RefServerApiService {
         );
     }
 
-    public async getLicenseType<T = any>(id: string): Promise<T> {
+    public async getTarif<T = any>(id: string): Promise<T> {
         const token = await this.getToken();
 
         return await makeRequest<T>(
-            got.get(`${config.REF_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
+            got.get(`${config.REF_SERVER_HOST}/${BASE_URL}tarif/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": token,
@@ -233,39 +233,39 @@ class RefServerApiService {
         );
     }
 
-    public async createLicenseType<T = any>(licenseType: ILicenseType): Promise<T> {
+    public async createTarif<T = any>(tarif: ITarif): Promise<T> {
         const token = await this.getToken();
 
         return await makeRequest<T>(
-            got.post(`${config.REF_SERVER_HOST}/${BASE_URL}license-type`, {
+            got.post(`${config.REF_SERVER_HOST}/${BASE_URL}tarif`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": token,
                 },
-                body: JSON.stringify(licenseType),
+                body: JSON.stringify(tarif),
             }),
         );
     }
 
-    public async updateLicenseType<T = any>(id: string, licenseType: ILicenseType): Promise<T> {
+    public async updateTarif<T = any>(id: string, tarif: ITarif): Promise<T> {
         const token = await this.getToken();
 
         return await makeRequest<T>(
-            got.put(`${config.REF_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
+            got.put(`${config.REF_SERVER_HOST}/${BASE_URL}tarif/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": token,
                 },
-                body: JSON.stringify(licenseType),
+                body: JSON.stringify(tarif),
             }),
         );
     }
 
-    public async deleteLicenseType<T = any>(id: string): Promise<T> {
+    public async deleteTarif<T = any>(id: string): Promise<T> {
         const token = await this.getToken();
 
         return await makeRequest<T>(
-            got.delete(`${config.REF_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
+            got.delete(`${config.REF_SERVER_HOST}/${BASE_URL}tarif/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": token,
@@ -370,7 +370,7 @@ class RefServerApiService {
         );
     }
 
-    public async createIntegration<T = any>(licenseType: IIntegration): Promise<T> {
+    public async createIntegration<T = any>(integration: IIntegration): Promise<T> {
         const token = await this.getToken();
 
         return await makeRequest<T>(
@@ -379,12 +379,12 @@ class RefServerApiService {
                     "content-type": "application/json",
                     "authorization": token,
                 },
-                body: JSON.stringify(licenseType),
+                body: JSON.stringify(integration),
             }),
         );
     }
 
-    public async updateIntegration<T = any>(id: string, licenseType: IIntegration): Promise<T> {
+    public async updateIntegration<T = any>(id: string, integration: IIntegration): Promise<T> {
         const token = await this.getToken();
 
         return await makeRequest<T>(
@@ -393,7 +393,7 @@ class RefServerApiService {
                     "content-type": "application/json",
                     "authorization": token,
                 },
-                body: JSON.stringify(licenseType),
+                body: JSON.stringify(integration),
             }),
         );
     }

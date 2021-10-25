@@ -40,6 +40,20 @@ export enum SubscriptionEventTypes {
     SUBSCRIPTION_TERMINATED = "SubscriptionTerminated",
 }
 
+/**
+ * @example
+ * {
+ *  "subscriptionId": "a99fbf70-6307-4acc-b61c-741ee9eef6c0",
+ *  "productId": "c0d01x35-5193-4cc2-9bfb-be20e0679498",
+ *  "userId": "01-000000000000001",
+ *  "timestamp": "2017-04-20T18:26:37.753+0000",
+ *  "sequenceNumber": 4,
+ *  "type": "SubscriptionCreated",
+ *  "planId": "example",
+ *  "trialPeriodDuration": "P14DT",
+ *  "deviceNumber": 35
+ * }
+ */
 interface ISubscriptionEventData {
     /**
      * subscriptionId (string) Required
@@ -95,7 +109,36 @@ export class SubscriptionEventController extends Controller {
     @OperationId("SubscriptionEvent")
     @Example<ISubscriptionEventResponse>(SUBSCRIPTION_INFO_RESPONSE)
     public async event(@Body() body: ISubscriptionEventData, @Request() request: IAuthRequest): Promise<ISubscriptionEventResponse> {
-        console.log(body);
+        switch(body.type) {
+            case SubscriptionEventTypes.SUBSCRIPTION_CREATED: {
+                // новая подписка. Сообщает о том, что пользователь приобрёл приложение в Личном кабинете. Приходит в начале пробного периода или перед сообщением об успешной оплате, если пробного периода нет.
+                break;
+            }
+            case SubscriptionEventTypes.ADDONS_UPDATED: {
+                // список платных опций, выбранных пользователем
+                break;
+            }
+            case SubscriptionEventTypes.SUBSCRIPTION_ACTIVATED: {
+                // Успешная оплата
+                break;
+            }
+            case SubscriptionEventTypes.SUBSCRIPTION_RENEWED: {
+                // Сообщает об успешной оплате очередного периода.
+                break;
+            }
+            case SubscriptionEventTypes.SUBSCRIPTION_TERMINATED: {
+                // Подписка завершена. Приходит если не прошла регулярная оплата
+                break;
+            }
+            case SubscriptionEventTypes.SUBSCRIPTION_TERMINATION_REQUEST: {
+                // Пользователь отправил запрос на завершение подписки (удалил приложение из Личного кабинета). Пользователь может возобновить подписку до окончания оплаченного периода.
+                break;
+            }
+            case SubscriptionEventTypes.SUBSCRIPTION_TERMS_CHANGED: {
+                // Изменились условия подписки, например, тарифный план или количество устройств.
+                break;
+            }
+        }
         return {};
     }
 }

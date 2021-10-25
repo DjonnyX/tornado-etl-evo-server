@@ -119,11 +119,11 @@ export const AVAILABLE_RIGHTS: Array<UserRights> = [
     UserRights.UPDATE_INTEGRATION,
     UserRights.DELETE_INTEGRATION,
     // License types
-    UserRights.READ_LICENSE_TYPES,
-    UserRights.READ_LICENSE_TYPE,
-    UserRights.CREATE_LICENSE_TYPE,
-    UserRights.UPDATE_LICENSE_TYPE,
-    UserRights.DELETE_LICENSE_TYPE,
+    UserRights.READ_TARIFS,
+    UserRights.READ_TARIF,
+    UserRights.CREATE_TARIF,
+    UserRights.UPDATE_TARIF,
+    UserRights.DELETE_TARIF,
     // Accounts
     UserRights.READ_ACCOUNTS,
     UserRights.READ_ACCOUNT,
