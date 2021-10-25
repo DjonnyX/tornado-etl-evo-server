@@ -27,7 +27,7 @@
   "homepage": "https://github.com/DjonnyX/tornado-etl-evo-server#readme",
   "license": "Commercial",
   "dependencies": {
-    "@djonnyx/tornado-types": "^1.5.10",
+    "@djonnyx/tornado-types": "^1.5.11",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
