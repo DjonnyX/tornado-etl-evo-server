@@ -1,7 +1,10 @@
 import * as got from "got";
 import { makeRequest } from "../utils/proxy";
 import * as config from "../config";
-import { ILicense, ITarif, IApplication, IIntegration, IAccount, IAccountInfo } from "@djonnyx/tornado-types";
+import {
+    ILicense, ITarif, IApplication, IIntegration, IAccount, IAccountInfo,
+    ISubscription
+} from "@djonnyx/tornado-types";
 import { ServerModel } from "../models";
 import { IBaseResponse } from "src/interfaces";
 
@@ -202,6 +205,62 @@ class RefServerApiService {
                 query: {
                     id,
                 }
+            }),
+        );
+    }
+
+    // licenses
+    public async getSubscriptions<T = any>(query?: { [propName: string]: string }): Promise<T> {
+        const token = await this.getToken();
+
+        return await makeRequest<T>(
+            got.get(`${config.REF_SERVER_HOST}/${BASE_URL}subscription`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": token,
+                },
+                query,
+            }),
+        );
+    }
+
+    public async getSubscription<T = any>(id: string): Promise<T> {
+        const token = await this.getToken();
+
+        return await makeRequest<T>(
+            got.get(`${config.REF_SERVER_HOST}/${BASE_URL}subscription/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": token,
+                },
+            }),
+        );
+    }
+
+    public async createSubscription<T = any>(subscription: ISubscription): Promise<T> {
+        const token = await this.getToken();
+
+        return await makeRequest<T>(
+            got.post(`${config.REF_SERVER_HOST}/${BASE_URL}subscription/`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": token,
+                },
+                body: JSON.stringify(subscription),
+            }),
+        );
+    }
+
+    public async updateSubscription<T = any>(id: string, subscription: ISubscription): Promise<T> {
+        const token = await this.getToken();
+
+        return await makeRequest<T>(
+            got.put(`${config.REF_SERVER_HOST}/${BASE_URL}subscription/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": token,
+                },
+                body: JSON.stringify(subscription),
             }),
         );
     }
