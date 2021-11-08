@@ -68,7 +68,7 @@ export class InstallationEventController extends Controller {
                 serverInfo = await ServerModel.findOne();
             } catch (err) {
                 this.setStatus(500);
-                console.error(err);
+                console.error(`Get serverInfo error. ${err}`);
                 return err;
             }
         }
@@ -84,7 +84,7 @@ export class InstallationEventController extends Controller {
             );
         } catch (err) {
             this.setStatus(500);
-            console.error(err);
+            console.error(`Get account error. ${err}`);
             return err;
         }
 
