@@ -163,6 +163,12 @@ export class SubscriptionEventController extends Controller {
 
         const existsSubscription = subscriptionsResponse.data?.[0];
 
+        // Если порядковый номер события меньше, чем есть в базе, то обрабатывать не нужно
+        if (existsSubscription.extra.evoSequenceNumber > body.sequenceNumber) {
+            this.setStatus(200);
+            return;
+        }
+
         let subscriptionResponse: IBaseResponse<ISubscription, {}>;
 
 
