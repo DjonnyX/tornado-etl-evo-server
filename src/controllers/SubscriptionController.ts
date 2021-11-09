@@ -1,7 +1,6 @@
 
-import { IAccountInfo, ISubscription, ITarif, SubscriptionStatuses, TarifPaymentPeriods } from "@djonnyx/tornado-types";
-import moment = require("moment");
-import { refServerApiService } from "src/services";
+import { IAccountInfo, ISubscription, ITarif, SubscriptionStatuses } from "@djonnyx/tornado-types";
+import { refServerApiService } from "../services";
 import { Controller, Route, Tags, Example, Request, Get, OperationId, Security, Post, Body } from "tsoa";
 import { IAuthRequest, IBaseResponse } from "../interfaces";
 
@@ -176,8 +175,6 @@ export class SubscriptionEventController extends Controller {
                         tarifId: tarif.id,
                         status: SubscriptionStatuses.NOT_ACTIVATED,
                         devices: body.deviceNumber,
-                        createdDate: new Date(),
-                        expiredDate: moment(new Date()).add(-1, "day").toDate(),
                         extra: {
                             evoSubscriptionId: body.subscriptionId,
                             evoSequenceNumber: body.sequenceNumber,
@@ -205,31 +202,12 @@ export class SubscriptionEventController extends Controller {
                 }
                 break;
             }
+            case SubscriptionEventTypes.SUBSCRIPTION_RENEWED:
+            // Сообщает об успешной оплате очередного периода.
             case SubscriptionEventTypes.SUBSCRIPTION_ACTIVATED: {
                 // Успешная оплата
                 try {
-                    subscriptionResponse = await refServerApiService.updateSubscription(existsSubscription.id, {
-                        status: SubscriptionStatuses.ACTIVATED,
-                        devices: body.deviceNumber,
-                        expiredDate: getPaymentPeriodDuration(new Date(), tarif.paymentPeriod),
-                        extra: {
-                            evoSubscriptionId: body.subscriptionId,
-                            evoSequenceNumber: body.sequenceNumber,
-                        }
-                    } as any);
-                } catch (err) {
-                    this.setStatus(500);
-                    console.error(`Update subscription error. ${err}`);
-                }
-                break;
-            }
-            case SubscriptionEventTypes.SUBSCRIPTION_RENEWED: {
-                // Сообщает об успешной оплате очередного периода.
-                try {
-                    subscriptionResponse = await refServerApiService.updateSubscription(existsSubscription.id, {
-                        status: SubscriptionStatuses.ACTIVATED,
-                        devices: body.deviceNumber,
-                        expiredDate: getPaymentPeriodDuration(new Date(), tarif.paymentPeriod),
+                    subscriptionResponse = await refServerApiService.activateNextPaymentPeriodSubscription(existsSubscription.id, {
                         extra: {
                             evoSubscriptionId: body.subscriptionId,
                             evoSequenceNumber: body.sequenceNumber,
@@ -242,88 +220,55 @@ export class SubscriptionEventController extends Controller {
                 break;
             }
             case SubscriptionEventTypes.SUBSCRIPTION_TERMINATED: {
-                // Подписка завершена. Приходит если не прошла регулярная оплата
-                try {
-                    subscriptionResponse = await refServerApiService.updateSubscription(existsSubscription.id, {
-                        status: SubscriptionStatuses.DEACTIVATED,
-                        devices: body.deviceNumber,
-                        extra: {
-                            evoSubscriptionId: body.subscriptionId,
-                            evoSequenceNumber: body.sequenceNumber,
-                        }
-                    } as any);
-                } catch (err) {
-                    this.setStatus(500);
-                    console.error(`Update subscription error. ${err}`);
-                }
-                break;
+            // Подписка завершена. Приходит если не прошла регулярная оплата
+            try {
+                subscriptionResponse = await refServerApiService.updateSubscription(existsSubscription.id, {
+                    status: SubscriptionStatuses.NOT_ACTIVATED,
+                    extra: {
+                        evoSubscriptionId: body.subscriptionId,
+                        evoSequenceNumber: body.sequenceNumber,
+                    }
+                } as any);
+            } catch (err) {
+                this.setStatus(500);
+                console.error(`Update subscription error. ${err}`);
             }
+            break;
+        }
             case SubscriptionEventTypes.SUBSCRIPTION_TERMINATION_REQUEST: {
-                // Пользователь отправил запрос на завершение подписки (удалил приложение из Личного кабинета). Пользователь может возобновить подписку до окончания оплаченного периода.
-                try {
-                    subscriptionResponse = await refServerApiService.updateSubscription(existsSubscription.id, {
-                        status: SubscriptionStatuses.DEACTIVATED,
-                        devices: body.deviceNumber,
-                        extra: {
-                            evoSubscriptionId: body.subscriptionId,
-                            evoSequenceNumber: body.sequenceNumber,
-                        }
-                    } as any);
-                } catch (err) {
-                    this.setStatus(500);
-                    console.error(`Update subscription error. ${err}`);
-                }
-                break;
+            // Пользователь отправил запрос на завершение подписки (удалил приложение из Личного кабинета). Пользователь может возобновить подписку до окончания оплаченного периода.
+            try {
+                subscriptionResponse = await refServerApiService.updateSubscription(existsSubscription.id, {
+                    status: SubscriptionStatuses.DEACTIVATED,
+                    extra: {
+                        evoSubscriptionId: body.subscriptionId,
+                        evoSequenceNumber: body.sequenceNumber,
+                    }
+                } as any);
+            } catch (err) {
+                this.setStatus(500);
+                console.error(`Update subscription error. ${err}`);
             }
+            break;
+        }
             case SubscriptionEventTypes.SUBSCRIPTION_TERMS_CHANGED: {
-                // Изменились условия подписки, например, тарифный план или количество устройств.
-                try {
-                    subscriptionResponse = await refServerApiService.updateSubscription(existsSubscription.id, {
-                        devices: body.deviceNumber,
-                        extra: {
-                            evoSubscriptionId: body.subscriptionId,
-                            evoSequenceNumber: body.sequenceNumber,
-                        }
-                    } as any);
-                } catch (err) {
-                    this.setStatus(500);
-                    console.error(`Update subscription error. ${err}`);
-                }
-                break;
+            // Изменились условия подписки, например, тарифный план или количество устройств.
+            try {
+                subscriptionResponse = await refServerApiService.updateSubscription(existsSubscription.id, {
+                    devices: body.deviceNumber,
+                    tarifId: body.planId,
+                    extra: {
+                        evoSubscriptionId: body.subscriptionId,
+                        evoSequenceNumber: body.sequenceNumber,
+                    }
+                } as any);
+            } catch (err) {
+                this.setStatus(500);
+                console.error(`Update subscription error. ${err}`);
             }
+            break;
         }
-        return {};
     }
-}
-
-export const getPaymentPeriodDuration = (date: Date, period: TarifPaymentPeriods): Date | undefined => {
-    switch (period) {
-        case TarifPaymentPeriods.EVERY_MONTH: {
-            return moment(date).add(1, "month").toDate();
-        }
-        case TarifPaymentPeriods.EVERY_3_MONTHS: {
-            return moment(date).add(3, "month").toDate();
-        }
-        case TarifPaymentPeriods.EVERY_6_MONTHS: {
-            return moment(date).add(6, "month").toDate();
-        }
-        case TarifPaymentPeriods.EVERY_12_MONTHS: {
-            return moment(date).add(12, "month").toDate();
-        }
-        case TarifPaymentPeriods.EVERY_13_MONTHS: {
-            return moment(date).add(13, "month").toDate();
-        }
-        case TarifPaymentPeriods.EVERY_15_MONTHS: {
-            return moment(date).add(15, "month").toDate();
-        }
-        case TarifPaymentPeriods.EVERY_18_MONTHS: {
-            return moment(date).add(18, "month").toDate();
-        }
-        case TarifPaymentPeriods.EVERY_24_MONTHS: {
-            return moment(date).add(24, "month").toDate();
-        }
-        case TarifPaymentPeriods.EVERY_36_MONTHS: {
-            return moment(date).add(24, "month").toDate();
-        }
+        return {};
     }
 }

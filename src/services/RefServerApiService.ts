@@ -3,12 +3,39 @@ import { makeRequest } from "../utils/proxy";
 import * as config from "../config";
 import {
     ILicense, ITarif, IApplication, IIntegration, IAccount, IAccountInfo,
-    ISubscription
+    ISubscription,
+    SubscriptionStatuses
 } from "@djonnyx/tornado-types";
 import { ServerModel } from "../models";
 import { IBaseResponse } from "src/interfaces";
 
 const BASE_URL = "api/v1/";
+
+interface ICreateSubscriptionParams {
+    client: string;
+    tarifId: string;
+    status: SubscriptionStatuses;
+    devices: number;
+    extra?: {
+        [key: string]: any;
+    } | null;
+}
+
+interface IUpdateSubscriptionParams {
+    client?: string;
+    tarifId?: string;
+    status?: SubscriptionStatuses;
+    devices?: number;
+    extra?: {
+        [key: string]: any;
+    } | null;
+}
+
+interface IActivateNextPeriodSubscriptionParams {
+    extra?: {
+        [key: string]: any;
+    } | null;
+}
 
 class RefServerApiService {
     private async getToken(): Promise<string> {
@@ -237,7 +264,7 @@ class RefServerApiService {
         );
     }
 
-    public async createSubscription<T = any>(subscription: ISubscription): Promise<T> {
+    public async createSubscription<T = any>(subscription: ICreateSubscriptionParams): Promise<T> {
         const token = await this.getToken();
 
         return await makeRequest<T>(
@@ -251,7 +278,7 @@ class RefServerApiService {
         );
     }
 
-    public async updateSubscription<T = any>(id: string, subscription: ISubscription): Promise<T> {
+    public async updateSubscription<T = any>(id: string, params: IUpdateSubscriptionParams): Promise<T> {
         const token = await this.getToken();
 
         return await makeRequest<T>(
@@ -260,7 +287,21 @@ class RefServerApiService {
                     "content-type": "application/json",
                     "authorization": token,
                 },
-                body: JSON.stringify(subscription),
+                body: JSON.stringify(params),
+            }),
+        );
+    }
+
+    public async activateNextPaymentPeriodSubscription<T = any>(id: string, params: IActivateNextPeriodSubscriptionParams): Promise<T> {
+        const token = await this.getToken();
+
+        return await makeRequest<T>(
+            got.post(`${config.REF_SERVER_HOST}/${BASE_URL}subscription/activateNextPeriod/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": token,
+                },
+                body: JSON.stringify(params),
             }),
         );
     }
